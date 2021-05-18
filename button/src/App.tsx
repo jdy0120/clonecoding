@@ -1,7 +1,8 @@
 import React from 'react';
+import CircleComponent from './components/CircleComponent';
+import CircleStyle from './components/CircleStyle';
 import Button from './components/Button';
 import styled, { ThemeProvider } from 'styled-components';
-import Dialog from './components/Dialog';
 
 const AppBlock = styled.div`
   width: 512px;
@@ -18,21 +19,9 @@ const ButtonGroup = styled.div`
 `;
 
 function App() {
-  const [dialog, setDialog] = React.useState(false);
 
-  const onClick = () => {
-    setDialog(true);
-  }
-
-  const onConfirm = () => {
-    console.log('확인');
-    setDialog(false);
-  }
-
-  const onCancel = () => {
-    console.log('취소');
-    setDialog(false);
-  }
+  const [circleColor, setCircleColor] = React.useState('');
+  const [sizeState, setSizeState] = React.useState('small');
 
   return (
     <ThemeProvider
@@ -44,51 +33,30 @@ function App() {
         }
       }}
     >
-      <>
-        <AppBlock>
-          <ButtonGroup>
-            <Button size='large'>BUTTON</Button>
-            <Button>BUTTON</Button>
-            <Button size='small'>BUTTON</Button>
-          </ButtonGroup>
-          <ButtonGroup>
-            <Button color= 'gray' size='large'>BUTTON</Button>
-            <Button color= 'gray'>BUTTON</Button>
-            <Button color= 'gray' size='small'>BUTTON</Button>
-          </ButtonGroup>
-          <ButtonGroup>
-            <Button color= 'pink' size='large'>BUTTON</Button>
-            <Button color= 'pink' >BUTTON</Button>
-            <Button color= 'pink' size='small'>BUTTON</Button>
-          </ButtonGroup>
-          <ButtonGroup>
-            <Button color= 'blue' size='large' outline>BUTTON</Button>
-            <Button color= 'gray' outline>BUTTON</Button>
-            <Button color= 'pink' size='small' outline>BUTTON</Button>
-          </ButtonGroup>
-          <ButtonGroup>
-            <Button size='large' fullWidth>
-              BUTTON
-            </Button>
-            <Button size='large' color='gray' fullWidth>
-              BUTTON
-            </Button>
-            <Button size='large' color='pink' fullWidth onClick={onClick}>
-              삭제
-            </Button>
-          </ButtonGroup>
-        </AppBlock>
-        <Dialog
-          title='정말로 삭제하시겠습니까?'
-          confirmText='삭제'
-          cancelText='취소'
-          onConfirm={onConfirm}
-          onCancel={onCancel}
-          visible={dialog}
-        >
-          데이터를 정말로 삭제하시겠습니까?
-        </Dialog>
-      </>
+      <CircleStyle setCircleColor={setCircleColor} setSizeState={setSizeState}/>
+      <CircleComponent color={circleColor} huge={sizeState}/>
+      <AppBlock>
+        <ButtonGroup>
+          <Button size='large'>{'BUTTON'}</Button>
+          <Button>{'BUTTON'}</Button>
+          <Button size='small'>{'BUTTON'}</Button>
+        </ButtonGroup>
+        <ButtonGroup>
+          <Button color='gray' size='large'>{'BUTTON'}</Button>
+          <Button color='gray'>{'BUTTON'}</Button>
+          <Button color='gray' size='small'>{'BUTTON'}</Button>
+        </ButtonGroup>
+        <ButtonGroup>
+          <Button color='pink' size='large'>{'BUTTON'}</Button>
+          <Button color='pink'>{'BUTTON'}</Button>
+          <Button color='pink' size='small'>{'BUTTON'}</Button>
+        </ButtonGroup>
+        <ButtonGroup>
+          <Button size='large' fullWidth>{'BUTTON'}</Button>
+          <Button size='large' color='gray' fullWidth>{'BUTTON'}</Button>
+          <Button size='large' color='pink' fullWidth>{'BUTTON'}</Button>
+        </ButtonGroup>
+      </AppBlock>
     </ThemeProvider>
   );
 }

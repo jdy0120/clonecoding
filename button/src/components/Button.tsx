@@ -2,49 +2,22 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import { darken, lighten } from 'polished';
 
-type Props = {
-  children: string,
-  color: string,
-  size: string,
-  outline?: boolean,
-  fullWidth?: boolean,
-  onClick?: any,
+interface Props {
+  theme?: any;
+  children?: string;
+  color: string;
+  size: string;
+  fullWidth: boolean;
 }
 
 type Sizes = {
-  [key : string]: any
+  [key: string] : any
 }
-
-const colorStyles = css<Props>`
-  ${({ theme, color }) => {
-    const selected = theme.palette[color];
-    return css<Props>`
-      background: ${selected};
-      &:hover {
-        background: ${lighten(0.1, selected)};
-      }
-      &:active {
-        background: ${darken(0.1, selected)};
-      }
-      ${props =>
-        props.outline &&
-        css`
-          color: ${selected};
-          background: none;
-          border: 1px solid ${selected};
-          &:hover {
-            background: ${selected};
-            color: white;
-          }
-        `}
-    `;
-  }}
-`;
 
 const sizes:Sizes = {
   large: {
     height: '3rem',
-    fontSize: '1.25',
+    fontSize: '1.25rem',
   },
   medium: {
     height: '2.25rem',
@@ -52,28 +25,47 @@ const sizes:Sizes = {
   },
   small: {
     height: '1.75rem',
-    fontSize: '0.875rem',
+    fontSize: '0.875',
   }
 }
 
+const colorStyles = css<Props>`
+  ${({ theme, color }:Props) => {
+    const selected = theme.palette[color];
+    return css`
+      background: ${selected};
+      &:hover {
+        background: ${lighten(0.1, selected)}
+      }
+      &:active {
+        background: ${darken(0.1, selected)}
+      }
+    `;
+  }}
+`;
+
 const sizeStyles = css<Props>`
-  ${({ size }) => css`
-    height: ${sizes[size].height};
-    font-size: ${sizes[size].fontSize};
-  `}
+  ${({ size, ...rest }:Props) => {
+    const {height, fontSize} = sizes[size];
+    console.log(height,fontSize)
+    return css`
+      height: ${height};
+      font-size: ${fontSize};
+    `;
+  }}
 `;
 
 const fullWidthStyle = css<Props>`
-  ${props =>
-    props.fullWidth &&
-    css`
+  ${({ fullWidth, ...rest }:Props) => {
+    return fullWidth && css`
       width: 100%;
       justify-content: center;
       & + & {
         margin-left: 0;
         margin-top: 1rem;
       }
-    `}
+    `
+  }}
 `;
 
 const StyledButton = styled.button<Props>`
@@ -88,36 +80,30 @@ const StyledButton = styled.button<Props>`
   padding-right: 1rem;
   align-items: center;
 
-  /* 크기 */
+  height: 2.25rem;
+  font-size: 1rem;
+
   ${sizeStyles}
 
-  /* 색상 */
   ${colorStyles}
+
+  ${fullWidthStyle}
 
   & + & {
     margin-left: 1rem;
   }
-
-  ${fullWidthStyle}
 `;
 
-const Button = ({ children, color, size, outline, fullWidth, ...rest }:Props) => {
+const Button = ({ children, size, color, ...rest }:Props) => {
   return (
-  <StyledButton
-    size={size}
-    color={color}
-    outline={outline}
-    fullWidth={fullWidth}
-    {...rest}
-  >
-    {children}
-  </StyledButton>
+    <StyledButton color={color} size={size} {...rest}>{children}</StyledButton>
   );
 }
 
 Button.defaultProps = {
   color: 'blue',
   size: 'medium',
-};
+  fullWidth: false,
+}
 
 export default Button;
