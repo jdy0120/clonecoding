@@ -7,7 +7,9 @@ interface Props {
   children?: string;
   color: string;
   size: string;
-  fullWidth: boolean;
+  fullWidth?: boolean;
+  outline?: boolean;
+  onClick?: () => void;
 }
 
 type Sizes = {
@@ -25,7 +27,7 @@ const sizes:Sizes = {
   },
   small: {
     height: '1.75rem',
-    fontSize: '0.875',
+    fontSize: '0.875rem',
   }
 }
 
@@ -35,11 +37,22 @@ const colorStyles = css<Props>`
     return css`
       background: ${selected};
       &:hover {
-        background: ${lighten(0.1, selected)}
+        background: ${lighten(0.1, selected)};
       }
       &:active {
-        background: ${darken(0.1, selected)}
+        background: ${darken(0.1, selected)};
       }
+      ${({ outline }:Props) => {
+        return outline && css`
+          color: ${selected};
+          background: none;
+          border: 1px solid ${selected};
+          &:hover {
+            background: ${selected};
+            color: white;
+          }
+        `
+      }}
     `;
   }}
 `;
@@ -47,7 +60,6 @@ const colorStyles = css<Props>`
 const sizeStyles = css<Props>`
   ${({ size, ...rest }:Props) => {
     const {height, fontSize} = sizes[size];
-    console.log(height,fontSize)
     return css`
       height: ${height};
       font-size: ${fontSize};
@@ -56,14 +68,12 @@ const sizeStyles = css<Props>`
 `;
 
 const fullWidthStyle = css<Props>`
-  ${({ fullWidth, ...rest }:Props) => {
+  ${({ fullWidth }:Props) => {
     return fullWidth && css`
       width: 100%;
       justify-content: center;
-      & + & {
-        margin-left: 0;
-        margin-top: 1rem;
-      }
+      margin-left: 0;
+      margin-top: 1rem;
     `
   }}
 `;
@@ -80,18 +90,20 @@ const StyledButton = styled.button<Props>`
   padding-right: 1rem;
   align-items: center;
 
-  height: 2.25rem;
-  font-size: 1rem;
-
+  /* 크기 */
   ${sizeStyles}
 
+  /* 색상 */
   ${colorStyles}
 
-  ${fullWidthStyle}
-
+  /* 기타 */
   & + & {
     margin-left: 1rem;
   }
+
+  ${fullWidthStyle}
+  
+  
 `;
 
 const Button = ({ children, size, color, ...rest }:Props) => {
@@ -103,7 +115,6 @@ const Button = ({ children, size, color, ...rest }:Props) => {
 Button.defaultProps = {
   color: 'blue',
   size: 'medium',
-  fullWidth: false,
 }
 
 export default Button;
