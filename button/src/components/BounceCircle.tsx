@@ -1,6 +1,7 @@
 import React from 'react'
 import styled, { keyframes, css } from 'styled-components';
 
+
 const Bounce = keyframes`
   0% {
     transform: scale(0);
@@ -11,7 +12,7 @@ const Bounce = keyframes`
   100% {
     transform: scale(0);
   }
-`
+`;
 
 const Circle = styled.div`
   width: 300px;
